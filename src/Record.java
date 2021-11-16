@@ -27,6 +27,16 @@ public class Record implements Comparable<Record> {
     public byte[] getCompleteRecord() {
         return completeRecord;
     }
+    
+    /**
+     * Returns the object's key
+     * 
+     * @return the key
+     */
+    public long getRecId() {
+        ByteBuffer buff = ByteBuffer.wrap(completeRecord);
+        return buff.getLong(0);
+    }
 
     /**
      * Returns the object's key

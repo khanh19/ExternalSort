@@ -1,6 +1,5 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
@@ -21,7 +20,7 @@ public class FileReader {
             return null;
         } else if (off + 8192 > inputFile.length()) {
             long nSize = inputFile.length() - off;
-            currBlock = new byte[Math.toIntExact(nSize)];
+            currBlock = new byte[Integer.parseInt(Long.toString(nSize))];
             totalByte = inputFile.read(currBlock);
             off += totalByte;
         } else {
@@ -37,12 +36,42 @@ public class FileReader {
             System.out.println("End of this file has been reached.");
             return false;
         }
+        return totalByte != inputFile.length();
 
-        if (totalByte != inputFile.length()) {
-            return true;
-        }
-        return false;
+    }
 
+    public void parseRange(byte[] block, int start, int end) throws IOException {
+        inputFile.seek(start);
+        inputFile.read(block, 0, block.length);
+
+    }
+
+    public RandomAccessFile getInputFile() {
+        return this.inputFile;
+    }
+
+    public void setInputFile(RandomAccessFile inputFile) {
+        this.inputFile = inputFile;
+    }
+
+    public int getTotalByte() {
+        return this.totalByte;
+    }
+
+    public void setTotalByte(int totalByte) {
+        this.totalByte = totalByte;
+    }
+
+    public long getOff() {
+        return this.off;
+    }
+
+    public void setOff(long off) {
+        this.off = off;
+    }
+
+    public void closeFile() throws IOException {
+        inputFile.close();
     }
 
 }

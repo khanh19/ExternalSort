@@ -40,17 +40,18 @@ public class Externalsort {
      * @param args Command line parameters
      */
     public static void main(String[] args) throws IOException {
-        FileWriter writer = new FileWriter("output.txt");
-        FileReader parser = new FileReader(new File(args[0]));
+        FileReader dataParser = new FileReader(new File(args[0]));
+        FileWriter writer = new FileWriter(new File(args[1]));
+        
         byte[] block;
-        while (parser.hasNext()) {
-            block = parser.next();
+        while (dataParser.hasNext()) {
+            block = dataParser.next();
             for (int i = 0; i < block.length; i += 16) {
                 Record rec = new Record(Arrays.copyOfRange(block, i, i + 16));
-                writer.write(rec.getKey() + "\n");
+                writer.write(rec.getRecId() + " " + rec.getKey() +" at offset:" + i +"\n");
             }
         }
-        ((FileReader) parser).getInputFile().close();
+        dataParser.closeFile();
         writer.close();
     }
 
