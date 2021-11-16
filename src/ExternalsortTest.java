@@ -1,3 +1,5 @@
+import java.io.IOException;
+
 import student.TestCase;
 
 /**
@@ -5,19 +7,20 @@ import student.TestCase;
  * @version {Put Something Here}
  */
 public class ExternalsortTest extends TestCase {
-    
-    
+
     /**
      * set up for tests
      */
     public void setUp() {
-        //nothing to set up.
+        // nothing to set up.
     }
-    
+
     /**
      * Get code coverage of the class declaration.
+     * 
+     * @throws IOException
      */
-    public void testExternalsortInit() {
+    public void testExternalsortInit() throws IOException {
         Externalsort sorter = new Externalsort();
         assertNotNull(sorter);
         Externalsort.main(null);

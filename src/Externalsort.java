@@ -50,7 +50,7 @@ public class Externalsort {
                 writer.write(rec.getKey() + "\n");
             }
         }
-        parser.getInputFile().close();
+        ((FileReader) parser).getInputFile().close();
         writer.close();
     }
 
