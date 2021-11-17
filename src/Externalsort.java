@@ -1,3 +1,8 @@
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Arrays;
+
 /**
  * {Project Description Here}
  */
@@ -32,11 +37,22 @@
 public class Externalsort {
 
     /**
-     * @param args
-     *     Command line parameters
+     * @param args Command line parameters
      */
-    public static void main(String[] args){
-
+    public static void main(String[] args) throws IOException {
+        FileReader dataParser = new FileReader(new File(args[0]));
+        FileWriter writer = new FileWriter(new File(args[1]));
+        
+        byte[] block;
+        while (dataParser.hasNext()) {
+            block = dataParser.next();
+            for (int i = 0; i < block.length; i += 16) {
+                Record rec = new Record(Arrays.copyOfRange(block, i, i + 16));
+                writer.write(rec.getRecId() + " " + rec.getKey() +" at offset:" + i +"\n");
+            }
+        }
+        dataParser.closeFile();
+        writer.close();
     }
 
 }
