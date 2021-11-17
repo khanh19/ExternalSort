@@ -11,8 +11,21 @@ import java.util.LinkedList;
  *
  */
 public class replacementSelection {
+	private byte[] input;
+	private OutputBuffer outfile;
 
 	public replacementSelection(byte[] input, OutputBuffer outfile) {
+		this.input = input;
+		this.outfile = outfile;
+	}
+
+	/**
+	 * this class will take input and do replacement selection to the output buffer
+	 * 
+	 * @param input   the byte
+	 * @param outfile the output buffer
+	 */
+	public void sort() {
 		InputBuffer b = new InputBuffer(input);
 
 		Record[] list = new Record[4096];
@@ -26,7 +39,7 @@ public class replacementSelection {
 			heap.insert(new Record(b.nextRecord()));
 
 		}
-		
+
 		do {
 			while (heap.heapsize() != 0) {
 				Record record = heap.removeMin();
@@ -37,12 +50,17 @@ public class replacementSelection {
 						heap.insert(next);
 					} else {
 						list[count] = next;
+						count++;
 					}
 
 				}
 			}
+			for (int i = 0; i < list.length; i++) {
+				heap.insert(list[i]);
+			}
+			list = new Record[4096];
 		} while (heap.heapsize() != 0);
-		}
 
 	}
+
 }
