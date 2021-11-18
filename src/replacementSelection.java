@@ -1,3 +1,7 @@
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.LinkedList;
 
 /**
  * this class will do the replacement Selection
@@ -7,12 +11,14 @@
  *
  */
 public class replacementSelection {
-	private byte[] input;
 	private OutputBuffer outfile;
+	private Heap<Record> heap;
+	private FileWriter writer;
 
-	public replacementSelection(byte[] input, OutputBuffer outfile) {
-		this.input = input;
+	public replacementSelection(OutputBuffer outfile, Heap<Record> heap, FileWriter writer) {
 		this.outfile = outfile;
+		this.heap = heap;
+		this.writer = writer;
 	}
 
 	/**
@@ -20,47 +26,45 @@ public class replacementSelection {
 	 * 
 	 * @param input   the byte
 	 * @param outfile the output buffer
+	 * @throws IOException
 	 */
-	public boolean sort() {
+	public void sort(byte[] input) throws IOException {
 		InputBuffer b = new InputBuffer(input);
 
-		Record[] list = new Record[4096];
-
-		Heap<Record> heap = new Heap<Record>(list, 4096);
+		LinkedList<Record> list = new LinkedList<Record>();
 
 		int count = 0;
+		if (heap.heapsize() < 4096) {
+			for (int i = 0; i < input.length; i += 16) {
+				Record rec = new Record(Arrays.copyOfRange(input, i, i + 16));
+				heap.insert(rec);
 
-		while (b.nextRecord() != null) {
-
-			heap.insert(new Record(b.nextRecord()));
-
-		}
-		if (heap.heapsize() > 4096) {
+			}
+		} else {
 
 			do {
 				while (heap.heapsize() != 0) {
 					Record record = heap.removeMin();
-					outfile.addToOutBuff(record.getCompleteRecord());
+					writer.write(record.getRecId() + " " + record.getKey() + "\n");
 					if (!b.isEmpty()) {
 						Record next = new Record(b.nextRecord());
 						if (next.compareTo(record) >= 0) {
 							heap.insert(next);
 						} else {
-							list[count] = next;
-							count++;
+							writer.write(next.getRecId() + " " + next.getKey() + "\n");
 						}
 
 					}
 				}
-				for (int i = 0; i < list.length; i++) {
-					heap.insert(list[i]);
-				}
-				list = new Record[4096];
 			} while (heap.heapsize() != 0);
-			return true;
-		} else {
-			return false;
 		}
+//		} else {
+//			int check = heap.heapsize();
+//			for (int i = 0; i < check; i++) {
+//				Record rec = heap.removeMin();
+//				writer.write(rec.getRecId() + " " + rec.getKey() + "\n");
+//			}
+//		}
 
 	}
 

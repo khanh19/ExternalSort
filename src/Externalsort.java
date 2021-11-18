@@ -47,35 +47,18 @@ public class Externalsort {
 		File source = new File(args[0]);
 		FileReader dataParser = new FileReader(source);
 		FileWriter writer = new FileWriter(new File(args[1]));
+		OutputBuffer outfile = new OutputBuffer();
 
 		byte[] block;
 		Record[] list = new Record[4096];
 		Heap<Record> record = new Heap<Record>(list, 4096);
+		replacementSelection sort = new replacementSelection(outfile, record, writer);
 		int count = 0;
 		while (dataParser.hasNext() && count <= 8) {
 			block = dataParser.next();
-			if(record.heapsize() >= 4096) {
-				break;
-			}
-			System.out.println(record.heapsize());
-			for (int i = 0; i < block.length; i += 16) {
-				Record rec = new Record(Arrays.copyOfRange(block, i, i + 16));
-				record.insert(rec);
-			}
+			sort.sort(block);
 			count++;
 		}
-		
-		
-		
-		int len = 0;
-		int check = record.heapsize();
-		for (int i = 0; i < check; i++) {
-			Record rec = record.removeMin();
-			writer.write(rec.getRecId() + " " + rec.getKey() + "\n");
-			len++;
-
-		}
-		System.out.println(len);
 
 		dataParser.closeFile();
 		writer.close();
