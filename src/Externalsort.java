@@ -1,6 +1,9 @@
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.CopyOption;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 
 /**
@@ -41,36 +44,42 @@ public class Externalsort {
 	 * @param args Command line parameters
 	 */
 	public static void main(String[] args) throws IOException {
-		FileReader dataParser = new FileReader(new File(args[0]));
+		File source = new File(args[0]);
+		FileReader dataParser = new FileReader(source);
 		FileWriter writer = new FileWriter(new File(args[1]));
 
 		byte[] block;
-		Record[] list = new Record[3584];
-		Heap<Record> record = new Heap<Record>(list, 3584);
+		Record[] list = new Record[4096];
+		Heap<Record> record = new Heap<Record>(list, 4096);
 		int count = 0;
-		while (dataParser.hasNext() && count < 8) {
+		while (dataParser.hasNext() && count <= 8) {
 			block = dataParser.next();
+			if(record.heapsize() >= 4096) {
+				break;
+			}
+			System.out.println(record.heapsize());
 			for (int i = 0; i < block.length; i += 16) {
 				Record rec = new Record(Arrays.copyOfRange(block, i, i + 16));
 				record.insert(rec);
-				writer.write(rec.getRecId() + " " + rec.getKey() + " at offset:" + i + "\n");
 			}
 			count++;
 		}
+		
+		
+		
+		int len = 0;
 		int check = record.heapsize();
-		for(int i = 0; i < check; i++) {
-			System.out.println(record.removeMin().getKey());
-//			list[i] = record.removeMin();
-//			list[i] = record.getRecord(i);
+		for (int i = 0; i < check; i++) {
+			Record rec = record.removeMin();
+			writer.write(rec.getRecId() + " " + rec.getKey() + "\n");
+			len++;
+
 		}
-//		record.Sort(list);
-//		for(int i = 0; i < check; i++) {
-//			System.out.println(list[i].getKey());
-//			System.out.println(list[i].getRecId() + " " + list[i].getKey());
-//		}
+		System.out.println(len);
 
 		dataParser.closeFile();
 		writer.close();
+
 	}
 
 }
