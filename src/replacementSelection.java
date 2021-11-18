@@ -1,7 +1,3 @@
-import java.io.File;
-import java.nio.Buffer;
-import java.nio.ByteBuffer;
-import java.util.LinkedList;
 
 /**
  * this class will do the replacement Selection
@@ -25,7 +21,7 @@ public class replacementSelection {
 	 * @param input   the byte
 	 * @param outfile the output buffer
 	 */
-	public void sort() {
+	public boolean sort() {
 		InputBuffer b = new InputBuffer(input);
 
 		Record[] list = new Record[4096];
@@ -39,27 +35,32 @@ public class replacementSelection {
 			heap.insert(new Record(b.nextRecord()));
 
 		}
+		if (heap.heapsize() > 4096) {
 
-		do {
-			while (heap.heapsize() != 0) {
-				Record record = heap.removeMin();
-				outfile.addToOutBuff(record.getCompleteRecord());
-				if (!b.isEmpty()) {
-					Record next = new Record(b.nextRecord());
-					if (next.compareTo(record) >= 0) {
-						heap.insert(next);
-					} else {
-						list[count] = next;
-						count++;
+			do {
+				while (heap.heapsize() != 0) {
+					Record record = heap.removeMin();
+					outfile.addToOutBuff(record.getCompleteRecord());
+					if (!b.isEmpty()) {
+						Record next = new Record(b.nextRecord());
+						if (next.compareTo(record) >= 0) {
+							heap.insert(next);
+						} else {
+							list[count] = next;
+							count++;
+						}
+
 					}
-
 				}
-			}
-			for (int i = 0; i < list.length; i++) {
-				heap.insert(list[i]);
-			}
-			list = new Record[4096];
-		} while (heap.heapsize() != 0);
+				for (int i = 0; i < list.length; i++) {
+					heap.insert(list[i]);
+				}
+				list = new Record[4096];
+			} while (heap.heapsize() != 0);
+			return true;
+		} else {
+			return false;
+		}
 
 	}
 

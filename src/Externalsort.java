@@ -4,14 +4,15 @@ import java.io.IOException;
 import java.util.Arrays;
 
 /**
- * {Project Description Here}
+ * this project will sort the data
  */
 
 /**
  * The class containing the main method.
  *
- * @author {Your Name Here}
- * @version {Put Something Here}
+ * @author Quoc Cuong Pham
+ * @author Khanh Pham
+ * @version 11/17/2021
  */
 
 // On my honor:
@@ -36,6 +37,7 @@ import java.util.Arrays;
 
 public class Externalsort {
 
+<<<<<<< HEAD
     /**
      * @param args Command line parameters
      */
@@ -54,5 +56,42 @@ public class Externalsort {
         dataParser.closeFile();
         writer.close();
     }
+=======
+	/**
+	 * @param args Command line parameters
+	 */
+	public static void main(String[] args) throws IOException {
+		FileReader dataParser = new FileReader(new File(args[0]));
+		FileWriter writer = new FileWriter(new File(args[1]));
+
+		byte[] block;
+		Record[] list = new Record[3584];
+		Heap<Record> record = new Heap<Record>(list, 3584);
+		int count = 0;
+		while (dataParser.hasNext() && count < 8) {
+			block = dataParser.next();
+			for (int i = 0; i < block.length; i += 16) {
+				Record rec = new Record(Arrays.copyOfRange(block, i, i + 16));
+				record.insert(rec);
+				writer.write(rec.getRecId() + " " + rec.getKey() + " at offset:" + i + "\n");
+			}
+			count++;
+		}
+		int check = record.heapsize();
+		for(int i = 0; i < check; i++) {
+			System.out.println(record.removeMin().getKey());
+//			list[i] = record.removeMin();
+//			list[i] = record.getRecord(i);
+		}
+//		record.Sort(list);
+//		for(int i = 0; i < check; i++) {
+//			System.out.println(list[i].getKey());
+//			System.out.println(list[i].getRecId() + " " + list[i].getKey());
+//		}
+
+		dataParser.closeFile();
+		writer.close();
+	}
+>>>>>>> 973354c5513e04b294575b3c9a48e0487c82ea48
 
 }
