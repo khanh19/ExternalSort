@@ -36,6 +36,8 @@ public class MultiwayMerge {
      * - then remove Min and write Min to output File. - Check if there are any run
      * is exhausted then move to next block of that run. - the run is exhausted when
      * the file pointer position reaches the start of the next run
+     * 
+     * @param sourceFile is name of file
      */
     public void multiwayMerge(String sourceFile) throws IOException {
         File source = new File(sourceFile);
@@ -81,7 +83,6 @@ public class MultiwayMerge {
                             checker = -1;
                         }
                     }
-
                     if (checker != -1) {
                         byte[] currBlock = array.get(checker).extractRun();
                         if (currBlock == null) {

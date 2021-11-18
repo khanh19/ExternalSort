@@ -9,7 +9,7 @@ public class ReplacementSelectionTest extends TestCase {
 
 	public void setup() throws FileNotFoundException {
 		outfile = new OutputBuffer();
-		check = new replacementSelection(aBite, outfile);
+		// check = new replacementSelection(aBite, outfile);
 	}
 
 }
