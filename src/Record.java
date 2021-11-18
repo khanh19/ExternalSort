@@ -9,6 +9,7 @@ import java.nio.ByteBuffer;
 public class Record implements Comparable<Record> {
 
     private byte[] completeRecord;
+    private int currentRun;
 
     /**
      * The constructor for the Record class
@@ -16,7 +17,12 @@ public class Record implements Comparable<Record> {
      * @param record The byte for this object
      */
     public Record(byte[] record) {
-        completeRecord = record;
+        this.completeRecord = record;
+    }
+
+    public Record(byte[] record, int numRun) {
+        this.completeRecord = record;
+        this.currentRun = numRun;
     }
 
     /**
@@ -27,7 +33,7 @@ public class Record implements Comparable<Record> {
     public byte[] getCompleteRecord() {
         return completeRecord;
     }
-    
+
     /**
      * Returns the object's key
      * 
@@ -67,6 +73,14 @@ public class Record implements Comparable<Record> {
      */
     public String toString() {
         return "" + this.getKey();
+    }
+
+    public int getCurrentRun() {
+        return this.currentRun;
+    }
+
+    public void setCurrentRun(int currentRun) {
+        this.currentRun = currentRun;
     }
 
 }

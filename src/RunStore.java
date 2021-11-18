@@ -96,6 +96,12 @@ public class RunStore {
         this.intput = intput;
     }
 
+    public void assignRConverter(FileReader converter) {
+        for (int i = 0; i < runStore.size(); i++) {
+            runStore.get(i).setReader(converter);
+        }
+    }
+
     public ArrayList<RunInfo> getAllRun() throws IOException {
         try {
             FileReader convert = new FileReader(new File(this.getIntput()));

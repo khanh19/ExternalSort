@@ -37,7 +37,6 @@ public class FileReader {
             return false;
         }
         return totalByte != inputFile.length();
-
     }
 
     public void parseRange(byte[] block, int start, int end) throws IOException {
