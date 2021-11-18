@@ -1,6 +1,9 @@
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.CopyOption;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 
 /**
@@ -37,6 +40,7 @@ import java.util.Arrays;
 
 public class Externalsort {
 
+<<<<<<< HEAD
     /**
      * @param args Command line parameters
      */
@@ -72,5 +76,31 @@ public class Externalsort {
         dataParser.closeFile();
         writer.close();
     }
+=======
+	/**
+	 * @param args Command line parameters
+	 */
+	public static void main(String[] args) throws IOException {
+		File source = new File(args[0]);
+		FileReader dataParser = new FileReader(source);
+		FileWriter writer = new FileWriter(new File(args[1]));
+		OutputBuffer outfile = new OutputBuffer();
+
+		byte[] block;
+		Record[] list = new Record[4096];
+		Heap<Record> record = new Heap<Record>(list, 4096);
+		replacementSelection sort = new replacementSelection(outfile, record, writer);
+		int count = 0;
+		while (dataParser.hasNext() && count <= 8) {
+			block = dataParser.next();
+			sort.sort(block);
+			count++;
+		}
+
+		dataParser.closeFile();
+		writer.close();
+
+	}
+>>>>>>> 67c940663e35d52a2dfcbb1ae7de467121c49136
 
 }
