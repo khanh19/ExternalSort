@@ -36,7 +36,7 @@ public class FileReader {
             System.out.println("End of this file has been reached.");
             return false;
         }
-        return totalByte != inputFile.length();
+        return this.off != inputFile.length();
 
     }
 

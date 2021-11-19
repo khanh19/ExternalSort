@@ -44,25 +44,26 @@ public class Externalsort {
 	 * @param args Command line parameters
 	 */
 	public static void main(String[] args) throws IOException {
-		File source = new File(args[0]);
-		FileReader dataParser = new FileReader(source);
+		dumpFile(args[0], args[1]);
 		FileWriter writer = new FileWriter(new File(args[1]));
-		OutputBuffer outfile = new OutputBuffer();
+		replacementSelection rep = new replacementSelection(writer, new File(args[0]));
+		rep.sort();
+		dumpFile(args[0], args[2]);
+	}
 
+	private static void dumpFile(String source, String outputFile) throws IOException {
+		FileWriter writer = new FileWriter(outputFile);
+		FileReader parser = new FileReader(new File(source));
 		byte[] block;
-		Record[] list = new Record[4096];
-		Heap<Record> record = new Heap<Record>(list, 4096);
-		replacementSelection sort = new replacementSelection(outfile, record, writer);
-		int count = 0;
-		while (dataParser.hasNext() && count <= 8) {
-			block = dataParser.next();
-			sort.sort(block);
-			count++;
+		while (parser.hasNext()) {
+			block = parser.next();
+			for (int i = 0; i < block.length; i += 16) {
+				Record rec = new Record(Arrays.copyOfRange(block, i, i + 16));
+				writer.write(rec.getRecId() + " " + rec.getKey() + "at off: " + i + " \n");
+			}
 		}
-
-		dataParser.closeFile();
+		parser.closeFile();
 		writer.close();
-
 	}
 
 }

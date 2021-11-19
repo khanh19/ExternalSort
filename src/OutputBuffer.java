@@ -36,15 +36,13 @@ public class OutputBuffer {
     }
 
     public void addToOutBuff(byte[] record) {
-        int i = counter;
-        int j = 0;
-        while (i < counter + 16) {
-            buff[i] = record[j];
-            j++;
+        int k = 0;
+        for (int i = counter; i < counter +16; i++) {
+        	buff[i] = record[k];
         }
-        i = counter + 16;
+        counter += 16;
+       
     }
-
     public boolean isFull() {
         return counter == 8192;
     }
