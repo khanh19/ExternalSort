@@ -37,7 +37,6 @@ public class replacementSelection {
 	private OutputBuffer outfile;
 	private Heap<Record> heap;
 	private File sourceFile;
-	private FileWriter writer;
 
 	/**
 	 * replacement selection constructor
@@ -47,12 +46,10 @@ public class replacementSelection {
 	 * @param writer  the output file
 	 * @throws FileNotFoundException
 	 */
-	public replacementSelection(FileWriter writer, File sourceFile) throws FileNotFoundException {
+	public replacementSelection(File sourceFile) throws FileNotFoundException {
 		outfile = new OutputBuffer();
 		heap = new Heap<Record>(new Record[4096], 4096);
 		this.sourceFile = sourceFile;
-		this.writer = writer;
-
 	}
 
 	/**

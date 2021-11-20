@@ -66,11 +66,11 @@ public class Externalsort {
 
         // dataParser.closeFile();
         // writer.close();
-        FileWriter writer = new FileWriter(new File(args[1]));
-        replacementSelection rep = new replacementSelection(writer, new File(args[0]));
+        replacementSelection rep = new replacementSelection(new File(args[0]));
         rep.sort();
         RunStore store = new RunStore(args[0]);
         ArrayList<RunStore.RunInfo> array = store.getAllRun();
+        System.out.println("Run length" + array.size());
         MultiwayMerge merger = new MultiwayMerge(args[0], store, array);
         merger.multiwayMerge(args[0]);
         printFile(args[0], args[1]);
