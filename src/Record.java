@@ -9,6 +9,7 @@ import java.nio.ByteBuffer;
 public class Record implements Comparable<Record> {
 
     private byte[] completeRecord;
+    private int currentRun;
 
     /**
      * The constructor for the Record class
@@ -16,7 +17,18 @@ public class Record implements Comparable<Record> {
      * @param record The byte for this object
      */
     public Record(byte[] record) {
-        completeRecord = record;
+        this.completeRecord = record;
+    }
+
+    /**
+     * The constructor for the Record class
+     * 
+     * @param record The byte for this object
+     * @param numRun run has this record
+     */
+    public Record(byte[] record, int numRun) {
+        this.completeRecord = record;
+        this.currentRun = numRun;
     }
 
     /**
@@ -27,7 +39,7 @@ public class Record implements Comparable<Record> {
     public byte[] getCompleteRecord() {
         return completeRecord;
     }
-    
+
     /**
      * Returns the object's key
      * 
@@ -48,13 +60,6 @@ public class Record implements Comparable<Record> {
         return buff.getDouble(8);
     }
 
-    /**
-     * Compare Two Records based on their keys
-     * 
-     * @param o - The Record to be compared.
-     * @return A negative integer, zero, or a positive integer as this employee is
-     *         less than, equal to, or greater than the supplied record object.
-     */
     @Override
     public int compareTo(Record toBeCompared) {
         return Double.compare(this.getKey(), toBeCompared.getKey());
@@ -66,7 +71,25 @@ public class Record implements Comparable<Record> {
      * @return a string of what the record contains
      */
     public String toString() {
-        return "" + this.getKey();
+        return this.getRecId() + " " + this.getKey();
+    }
+
+    /**
+     * to get current run
+     * 
+     * @return index of current run
+     */
+    public int getCurrentRun() {
+        return this.currentRun;
+    }
+
+    /**
+     * this is to set
+     * 
+     * @param currentRun is current run
+     */
+    public void setCurrentRun(int currentRun) {
+        this.currentRun = currentRun;
     }
 
 }
