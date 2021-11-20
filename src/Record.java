@@ -22,6 +22,7 @@ public class Record implements Comparable<Record> {
 
     /**
      * The constructor for the Record class
+     * 
      * @param record The byte for this object
      * @param numRun run has this record
      */
@@ -59,13 +60,6 @@ public class Record implements Comparable<Record> {
         return buff.getDouble(8);
     }
 
-    /**
-     * Compare Two Records based on their keys
-     * 
-     * @param o - The Record to be compared.
-     * @return A negative integer, zero, or a positive integer as this employee is
-     *         less than, equal to, or greater than the supplied record object.
-     */
     @Override
     public int compareTo(Record toBeCompared) {
         return Double.compare(this.getKey(), toBeCompared.getKey());
@@ -82,15 +76,16 @@ public class Record implements Comparable<Record> {
 
     /**
      * to get current run
+     * 
      * @return index of current run
      */
     public int getCurrentRun() {
         return this.currentRun;
     }
 
-    
     /**
      * this is to set
+     * 
      * @param currentRun is current run
      */
     public void setCurrentRun(int currentRun) {

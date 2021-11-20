@@ -1,4 +1,4 @@
-  import java.io.File;
+import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.file.Files;
@@ -6,35 +6,87 @@ import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+//On my honor:
+//
+//- I have not used source code obtained from another student,
+//or any other unauthorized source, either modified or
+//unmodified.
+//
+//- All source code and documentation used in my program is
+//either my original work, or was derived by me from the
+//source code published in the textbook for this course.
+//
+//- I have not discussed coding details about this project with
+//anyone other than my partner (in the case of a joint
+//submission), instructor, ACM/UPE tutors or the TAs assigned
+//to this course. I understand that I may discuss the concepts
+//of this program with other students, and that another student
+//may help me debug my program so long as neither of us writes
+//anything during the discussion or modifies any computer file
+//during the discussion. I have violated neither the spirit nor
+//letter of this restriction.
+/**
+ * the way merge class
+ * 
+ * @author Quoc Cuong Pham
+ * @author Khanh Pham
+ * @version 11/17/2021
+ *
+ */
 public class MultiwayMerge {
     private RunStore runner;
     private ArrayList<RunStore.RunInfo> array;
 
-    public MultiwayMerge(String sourceFile, RunStore run, ArrayList<RunStore.RunInfo> list) {
+    /**
+     * the construtor
+     * 
+     * @param sourceFile source file
+     * @param run        the run store
+     * @param list       the list of run
+     */
+    public MultiwayMerge(String sourceFile, 
+            RunStore run, ArrayList<RunStore.RunInfo> list) {
         this.runner = run;
         this.array = list;
     }
 
+    /**
+     * get runner method
+     * 
+     * @return the runner
+     */
     public RunStore getRunner() {
         return this.runner;
     }
 
+    /**
+     * set runner method
+     * 
+     * @param runner the runner
+     */
     public void setRunner(RunStore runner) {
         this.runner = runner;
     }
 
+    /**
+     * the array list run
+     * 
+     * @return the list of run
+     */
     public ArrayList<RunStore.RunInfo> getArray() {
         return this.array;
     }
 
+    /**
+     * set array of run
+     * 
+     * @param array the list of run
+     */
     public void setArray(ArrayList<RunStore.RunInfo> array) {
         this.array = array;
     }
 
     /**
-     * Steps to do K-way merge: - Add first block of each 8 runs to 8 blocks MinHeap
-     * - then remove Min and write Min to output File. - Check if there are any run
-     * is exhausted then move to next block of that run. - the run is exhausted when
      * the file pointer position reaches the start of the next run
      * 
      * @param sourceFile is name of file
@@ -56,11 +108,14 @@ public class MultiwayMerge {
             }
             while (runcount < array.size()) {
 
-                while (!(runcount >= array.size() || runcount >= runcount + 8)) {
+                while (!(runcount >= array.size() 
+                        || runcount >= runcount + 8)) {
                     byte[] currBlock = array.get(runcount).extractRun();
                     int i = 0;
                     while (i < currBlock.length) {
-                        minHeap.insert(new Record(Arrays.copyOfRange(currBlock, i, i + 16), runcount));
+                        minHeap.insert(new Record(Arrays.
+                                copyOfRange(currBlock, 
+                                        i, i + 16), runcount));
                         i += 16;
                     }
                     int recnum = currBlock.length / 16;
@@ -79,7 +134,8 @@ public class MultiwayMerge {
                     for (int i = 0; i < recordAmmount.size(); i++) {
                         if (recordAmmount.get(i) == 0) {
                             checker = i;
-                        } else {
+                        } 
+                        else {
                             checker = -1;
                         }
                     }
@@ -87,22 +143,26 @@ public class MultiwayMerge {
                         byte[] currBlock = array.get(checker).extractRun();
                         if (currBlock == null) {
                             recordAmmount.set(checker, -1);
-                        } else {
+                        } 
+                        else {
                             int i = 0;
                             while (i < currBlock.length) {
-                                minHeap.insert(new Record(Arrays.copyOfRange(currBlock, i, i + 16), checker));
+                                minHeap.insert(new Record(Arrays.
+                                        copyOfRange(currBlock, 
+                                                i, i + 16), checker));
                                 i += 16;
                             }
                             int recnum = currBlock.length / 16;
                             recordAmmount.set(checker, recnum);
                         }
                     }
-                } 
+                }
 
             }
             converter.closeFile();
             resultFile.close();
-            Files.move(result.toPath(), result.toPath().resolveSibling(sourceFile),
+            Files.move(result.toPath(), 
+                    result.toPath().resolveSibling(sourceFile),
                     StandardCopyOption.REPLACE_EXISTING);
             runcount = 0;
             runner = new RunStore(sourceFile);

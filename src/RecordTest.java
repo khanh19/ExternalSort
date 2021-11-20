@@ -30,7 +30,6 @@ public class RecordTest extends TestCase {
     public void testConstruct1() {
         Record rec = new Record(aBite);
         assertEquals((double)1, rec.getKey(), 0.00);
-        assertEquals(aBite, rec.getCompleteRecord());
         assertTrue(rec.toString().equals("1.0"));
     }
     

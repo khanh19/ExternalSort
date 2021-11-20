@@ -3,7 +3,7 @@ import java.io.FileNotFoundException;
 import student.TestCase;
 
 public class ReplacementSelectionTest extends TestCase {
-	private replacementSelection check;
+	// private replacementSelection check;
 	private byte[] aBite;
 	private OutputBuffer outfile;
 

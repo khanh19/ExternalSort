@@ -1,19 +1,10 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
-import java.util.LinkedList;
 
-/**
- * this class will do the replacement Selection
- * 
- * @author Quoc Cuong Pham
- * @author Khanh Pham
- *
- */
 //On my honor:
 //
 //- I have not used source code obtained from another student,
@@ -33,31 +24,35 @@ import java.util.LinkedList;
 //anything during the discussion or modifies any computer file
 //during the discussion. I have violated neither the spirit nor
 //letter of this restriction.
-public class replacementSelection {
+/**
+ * 
+ * 
+ * @author Quoc Cuong Pham
+ * @author Khanh Pham
+ * @version 11/17/2021
+ *
+ */
+public class ReplacementSelection {
 	private OutputBuffer outfile;
 	private Heap<Record> heap;
 	private File sourceFile;
 
 	/**
-	 * replacement selection constructor
+	 * the constructor
 	 * 
-	 * @param outfile the output file
-	 * @param heap    the heap that we need to fill for replacement selection
-	 * @param writer  the output file
-	 * @throws FileNotFoundException
+	 * @param sourceFile the source file
+	 * @throws FileNotFoundException throw exception when it's wrong
 	 */
-	public replacementSelection(File sourceFile) throws FileNotFoundException {
+	public ReplacementSelection(File sourceFile) throws FileNotFoundException {
 		outfile = new OutputBuffer();
 		heap = new Heap<Record>(new Record[4096], 4096);
 		this.sourceFile = sourceFile;
 	}
 
 	/**
-	 * this class will take input and do replacement selection to the output buffer
+	 * the sort function
 	 * 
-	 * @param input   the byte
-	 * @param outfile the output buffer
-	 * @throws IOException
+	 * @throws IOException throw exception when it's wrong
 	 */
 	public void sort() throws IOException {
 		FileReader parser = new FileReader(sourceFile);
@@ -65,7 +60,6 @@ public class replacementSelection {
 		byte[] block;
 		while (parser.hasNext() && count < 8) {
 			block = parser.next();
-			InputBuffer b = new InputBuffer(block);
 
 			if (heap.heapsize() < 4096) {
 				for (int i = 0; i < block.length; i += 16) {
@@ -82,7 +76,6 @@ public class replacementSelection {
 			while (!b.isEmpty()) {
 				if (outfile.isEmpty()) {
 					Record record = heap.getRoot();
-					System.out.print(record.getKey() + "\n");
 
 					outfile.addToOutBuff(record.getCompleteRecord());
 					Record next = new Record(b.nextRecord());
@@ -94,7 +87,6 @@ public class replacementSelection {
 
 				} else {
 					Record record = heap.getRoot();
-					System.out.print(record.getKey() + "\n");
 
 					outfile.addToOutBuff(record.getCompleteRecord());
 					Record next = new Record(b.nextRecord());
@@ -113,7 +105,6 @@ public class replacementSelection {
 		int n = heap.heapsize();
 		while (heap.heapsize() != 0) {
 			Record rec = heap.removeMin();
-			System.out.print(rec.getKey() + "\n");
 			outfile.addToOutBuff(rec.getCompleteRecord());
 			if (outfile.isFull()) {
 				outfile.fillRunFile();
@@ -128,7 +119,6 @@ public class replacementSelection {
 		while (heap.heapsize() != 0) {
 
 			Record rec = heap.removeMin();
-			System.out.print(rec.getKey() + "\n");
 			outfile.addToOutBuff(rec.getCompleteRecord());
 			if (outfile.isFull()) {
 				outfile.fillRunFile();
@@ -142,5 +132,4 @@ public class replacementSelection {
 		Files.move(nfile.toPath(), nfile.toPath().resolveSibling(sourceFile.getName()),
 				StandardCopyOption.REPLACE_EXISTING);
 	}
-
 }
