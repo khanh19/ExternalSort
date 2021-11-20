@@ -20,6 +20,11 @@ public class Record implements Comparable<Record> {
         this.completeRecord = record;
     }
 
+    /**
+     * The constructor for the Record class
+     * @param record The byte for this object
+     * @param numRun run has this record
+     */
     public Record(byte[] record, int numRun) {
         this.completeRecord = record;
         this.currentRun = numRun;
@@ -72,13 +77,22 @@ public class Record implements Comparable<Record> {
      * @return a string of what the record contains
      */
     public String toString() {
-        return "" + this.getKey();
+        return this.getRecId() + " " + this.getKey();
     }
 
+    /**
+     * to get current run
+     * @return index of current run
+     */
     public int getCurrentRun() {
         return this.currentRun;
     }
 
+    
+    /**
+     * this is to set
+     * @param currentRun is current run
+     */
     public void setCurrentRun(int currentRun) {
         this.currentRun = currentRun;
     }

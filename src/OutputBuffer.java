@@ -41,8 +41,9 @@ public class OutputBuffer {
         while (i < counter + 16) {
             buff[i] = record[j];
             j++;
+            i++;
         }
-        i = counter + 16;
+        counter += 16;
     }
 
     public boolean isFull() {

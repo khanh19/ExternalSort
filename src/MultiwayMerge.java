@@ -1,4 +1,4 @@
-import java.io.File;
+  import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.file.Files;
@@ -68,7 +68,7 @@ public class MultiwayMerge {
                     runcount++;
                 }
 
-                do {
+                while (minHeap.heapsize() > 0) {
                     Record record = (Record) minHeap.removeMin();
                     resultFile.write(record.getCompleteRecord());
                     int idx = record.getCurrentRun();
@@ -97,7 +97,7 @@ public class MultiwayMerge {
                             recordAmmount.set(checker, recnum);
                         }
                     }
-                } while (minHeap.heapsize() > 0);
+                } 
 
             }
             converter.closeFile();

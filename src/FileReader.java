@@ -36,7 +36,7 @@ public class FileReader {
             System.out.println("End of this file has been reached.");
             return false;
         }
-        return totalByte != inputFile.length();
+        return off != inputFile.length();
     }
 
     public void parseRange(byte[] block, int start, int end) throws IOException {

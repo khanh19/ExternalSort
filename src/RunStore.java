@@ -113,9 +113,11 @@ public class RunStore {
                 currBlock = convert.next();
                 for (int i = 0; i < currBlock.length; i += 16) {
                     Record currRecord = new Record(Arrays.copyOfRange(currBlock, i, i + 16));
-                    if (oldRecord.compareTo(currRecord) > 0 && oldRecord != null) {
-                        runStore.add(new RunStore.RunInfo(lPointer, rPointer));
-                        lPointer = rPointer;
+                    if (oldRecord != null ) {
+                        if (oldRecord.compareTo(currRecord) > 0 ) {
+                            runStore.add(new RunStore.RunInfo(lPointer, rPointer));
+                            lPointer = rPointer;
+                        }
                     }
                     rPointer += 16;
                     oldRecord = currRecord;
