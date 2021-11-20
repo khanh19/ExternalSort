@@ -41,6 +41,10 @@ public class Heap<E extends Comparable<? super E>> {
 		this.n = 0;
 	}
 
+	public int getMax() {
+		return size;
+	}
+
 	/**
 	 * return the number of current element in the heap
 	 * 
@@ -100,6 +104,13 @@ public class Heap<E extends Comparable<? super E>> {
 		return (pos - 1) / 2;
 	}
 
+	public void swapFirst() {
+		E temp = Heap[0];
+		Heap[0] = Heap[n - 1];
+		Heap[n - 1] = temp;
+		n--;
+	}
+
 	/**
 	 * the helper function to swap two record in an array
 	 * 
@@ -136,7 +147,7 @@ public class Heap<E extends Comparable<? super E>> {
 	 * 
 	 * @param pos the position of the record
 	 */
-	private void siftdown(int pos) {
+	public void siftdown(int pos) {
 		if ((pos < 0) || (pos >= n)) {
 			return;
 		}
@@ -155,7 +166,12 @@ public class Heap<E extends Comparable<? super E>> {
 
 		}
 	}
-
+	public E getRoot() {
+		return Heap[0];
+	}
+	public void replacementRoot(E record) {
+		Heap[0] = record;
+	}
 	/**
 	 * the function to remove the minimum node
 	 * 

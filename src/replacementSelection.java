@@ -66,7 +66,6 @@ public class replacementSelection {
 		FileReader parser = new FileReader(sourceFile);
 		int count = 0;
 		byte[] block;
-		LinkedList<Record> list = new LinkedList<Record>();
 		while (parser.hasNext() && count < 8) {
 			block = parser.next();
 			InputBuffer b = new InputBuffer(block);
@@ -80,48 +79,71 @@ public class replacementSelection {
 				count++;
 			}
 		}
-		int co = 0;
 		while (parser.hasNext()) {
 			block = parser.next();
 			InputBuffer b = new InputBuffer(block);
 			while (!b.isEmpty()) {
-				Record record = heap.removeMin();
-				System.out.print(record.getRecId() + " " + record.getKey() + "\n");
-				outfile.addToOutBuff(record.getCompleteRecord());
+				if (outfile.isEmpty()) {
+					Record record = heap.getRoot();
+					System.out.print(record.getKey() + "\n");
+
+					outfile.addToOutBuff(record.getCompleteRecord());
+					Record next = new Record(b.nextRecord());
+					heap.replacementRoot(next);
+					if (next.compareTo(record) < 0) {
+						heap.swapFirst();
+					}
+					heap.siftdown(0);
+
+				} else {
+					Record record = heap.getRoot();
+					System.out.print(record.getKey() + "\n");
+
+					outfile.addToOutBuff(record.getCompleteRecord());
+					Record next = new Record(b.nextRecord());
+					heap.replacementRoot(next);
+					if (next.compareTo(record) < 0 && !outfile.isFull()) {
+						heap.swapFirst();
+
+					}
+					heap.siftdown(0);
+				}
 				if (outfile.isFull()) {
 					outfile.fillRunFile();
 				}
-				co++;
-				Record next = new Record(b.nextRecord());
-				if (next.compareTo(record) >= 0) {
-					heap.insert(next);
-				} else {
-					list.add(next);
-				}
-
-			}
-			System.out.println("-----------------------------------------");
-			
-			System.out.println(outfile.getRandomfile().length());
-			System.out.println("-----------------------------------------");
-			
-			
-			while (!list.isEmpty()) {
-				heap.insert(list.remove());
 			}
 		}
+		int n = heap.heapsize();
 		while (heap.heapsize() != 0) {
 			Record rec = heap.removeMin();
+			System.out.print(rec.getKey() + "\n");
 			outfile.addToOutBuff(rec.getCompleteRecord());
 			if (outfile.isFull()) {
 				outfile.fillRunFile();
 			}
+
 		}
-		outfile.fillRunFile();
-		outfile.getRandomfile().close();
+		if (heap.getRecord(4095) != null) {
+			for (int i = 4095; i >= n; i--) {
+				heap.insert(heap.getRecord(i));
+			}
+		}
+		while (heap.heapsize() != 0) {
+
+			Record rec = heap.removeMin();
+			System.out.print(rec.getKey() + "\n");
+			outfile.addToOutBuff(rec.getCompleteRecord());
+			if (outfile.isFull()) {
+				outfile.fillRunFile();
+			}
+
+		}
+
+		outfile.closeFile();
 		parser.closeFile();
 		File nfile = new File("runFile.bin");
-		Files.move(nfile.toPath(), nfile.toPath().resolveSibling(sourceFile.getName()), StandardCopyOption.REPLACE_EXISTING);
+		Files.move(nfile.toPath(), nfile.toPath().resolveSibling(sourceFile.getName()),
+				StandardCopyOption.REPLACE_EXISTING);
 	}
 
 }

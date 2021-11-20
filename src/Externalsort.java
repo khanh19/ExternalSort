@@ -44,11 +44,10 @@ public class Externalsort {
 	 * @param args Command line parameters
 	 */
 	public static void main(String[] args) throws IOException {
-		dumpFile(args[0], args[1]);
 		FileWriter writer = new FileWriter(new File(args[1]));
 		replacementSelection rep = new replacementSelection(writer, new File(args[0]));
 		rep.sort();
-		dumpFile(args[0], args[2]);
+		dumpFile(args[0], args[1]);
 	}
 
 	private static void dumpFile(String source, String outputFile) throws IOException {
