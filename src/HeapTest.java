@@ -5,6 +5,7 @@ import java.util.Random;
 public class HeapTest extends TestCase {
 	private Record[] list;
 	private Heap<Record> heap;
+	private Heap<int> heap2;
 
 	private byte[] aBite;
 	private byte[] aBite2;
@@ -34,8 +35,6 @@ public class HeapTest extends TestCase {
 		heap.insert(record2);
 		System.out.println(list[0].getKey());
 		System.out.println(list[1].getKey());
-
-		heap.Sort(list);
 		System.out.println(list[0].getKey());
 		System.out.println(list[1].getKey());
 

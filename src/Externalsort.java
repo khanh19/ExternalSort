@@ -66,6 +66,9 @@ public class Externalsort {
 
         // dataParser.closeFile();
         // writer.close();
+        FileWriter writer = new FileWriter(new File(args[1]));
+        replacementSelection rep = new replacementSelection(writer, new File(args[0]));
+        rep.sort();
         RunStore store = new RunStore(args[0]);
         ArrayList<RunStore.RunInfo> array = store.getAllRun();
         MultiwayMerge merger = new MultiwayMerge(args[0], store, array);
@@ -89,7 +92,7 @@ public class Externalsort {
         reader.closeFile();
         outFile.close();
     }
-    
+
     private static void firstRecEachBlock(String source) throws IOException {
         FileReader reader = new FileReader(new File(source));
         byte[] currBlock;
@@ -101,22 +104,14 @@ public class Externalsort {
             recCount++;
             if (recCount % 5 == 0) {
                 str += rec.toString() + "\n";
-            }
-            else {
+            } else {
                 str += rec.toString() + " ";
             }
-            
-            
+
         }
         reader.closeFile();
         System.out.println(str);
-        
-        
-        
+
     }
-    
-    
-    
-    
 
 }

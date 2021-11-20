@@ -6,7 +6,8 @@ public class OutputBuffer {
     private int counter;
 
     public OutputBuffer() throws FileNotFoundException {
-        this.randomfile = new RandomAccessFile(new File("runFile.bin"), "rw");
+        File file = new File("runFile.bin");
+        this.randomfile = new RandomAccessFile(file, "rw");
         this.buff = new byte[8192];
         this.counter = 0;
     }
@@ -36,18 +37,21 @@ public class OutputBuffer {
     }
 
     public void addToOutBuff(byte[] record) {
-        int i = counter;
-        int j = 0;
-        while (i < counter + 16) {
-            buff[i] = record[j];
-            j++;
-            i++;
+        int k = 0;
+        for (int i = counter; i < counter + 16; i++) {
+            buff[i] = record[k];
+            k++;
         }
         counter += 16;
+
     }
 
     public boolean isFull() {
         return counter == 8192;
+    }
+
+    public boolean isEmpty() {
+        return counter == 0;
     }
 
     public void fillRunFile() throws IOException {
@@ -56,4 +60,7 @@ public class OutputBuffer {
         this.counter = 0;
     }
 
+    public void closeFile() throws IOException {
+        this.randomfile.close();
+    }
 }

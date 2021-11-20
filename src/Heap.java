@@ -5,38 +5,91 @@
  *
  * @param <E> the generic
  */
+//On my honor:
+//
+//- I have not used source code obtained from another student,
+//or any other unauthorized source, either modified or
+//unmodified.
+//
+//- All source code and documentation used in my program is
+//either my original work, or was derived by me from the
+//source code published in the textbook for this course.
+//
+//- I have not discussed coding details about this project with
+//anyone other than my partner (in the case of a joint
+//submission), instructor, ACM/UPE tutors or the TAs assigned
+//to this course. I understand that I may discuss the concepts
+//of this program with other students, and that another student
+//may help me debug my program so long as neither of us writes
+//anything during the discussion or modifies any computer file
+//during the discussion. I have violated neither the spirit nor
+//letter of this restriction.
 public class Heap<E extends Comparable<? super E>> {
 	private E[] Heap; // Pointer to the heap array
 	private int size; // Maximum size of the heap
 	private int n; // Number of things now in heap
 
-	// Constructor supporting preloading of heap contents
+	/**
+	 * this is the constructor of the heap
+	 * 
+	 * @param h   the array of the heap
+	 * @param max the maximum size of the heap
+	 */
 	public Heap(E[] h, int max) {
 		this.size = max;
 		this.Heap = h;
 		this.n = 0;
 	}
 
-	// Return current size of the heap
+	public int getMax() {
+		return size;
+	}
+
+	/**
+	 * return the number of current element in the heap
+	 * 
+	 * @return
+	 */
 	public int heapsize() {
 		return n;
 	}
 
+	/**
+	 * the function to return the record in specific pos
+	 * 
+	 * @param post the position of the record
+	 * @return the record
+	 */
 	public E getRecord(int post) {
 		return Heap[post];
 	}
 
-	// Return true if pos a leaf position, false otherwise
+	/**
+	 * helper function to test if it's the leaf
+	 * 
+	 * @param pos the position of the element
+	 * @return the true if it is the leaf
+	 */
 	private boolean isLeaf(int pos) {
 		return (pos >= n / 2) && (pos < n);
 	}
 
-	// Return position for left child of pos
+	/**
+	 * the helper function to test if it is the left child
+	 * 
+	 * @param pos the position of the record
+	 * @return the number
+	 */
 	private int leftchild(int pos) {
 		return 2 * pos + 1;
 	}
 
-	// Return position for right child of pos
+	/**
+	 * the helper function to check the right child
+	 * 
+	 * @param pos the position of that record
+	 * @return the number
+	 */
 	private int rightchild(int pos) {
 		return 2 * pos + 2;
 	}
@@ -49,6 +102,13 @@ public class Heap<E extends Comparable<? super E>> {
 	 */
 	private int parent(int pos) {
 		return (pos - 1) / 2;
+	}
+
+	public void swapFirst() {
+		E temp = Heap[0];
+		Heap[0] = Heap[n - 1];
+		Heap[n - 1] = temp;
+		n--;
 	}
 
 	/**
@@ -87,7 +147,7 @@ public class Heap<E extends Comparable<? super E>> {
 	 * 
 	 * @param pos the position of the record
 	 */
-	private void siftdown(int pos) {
+	public void siftdown(int pos) {
 		if ((pos < 0) || (pos >= n)) {
 			return;
 		}
@@ -106,7 +166,12 @@ public class Heap<E extends Comparable<? super E>> {
 
 		}
 	}
-
+	public E getRoot() {
+		return Heap[0];
+	}
+	public void replacementRoot(E record) {
+		Heap[0] = record;
+	}
 	/**
 	 * the function to remove the minimum node
 	 * 
@@ -120,37 +185,6 @@ public class Heap<E extends Comparable<? super E>> {
 		Heap[0] = Heap[--n];
 		siftdown(0);
 		return removeMin;
-	}
-
-	public void Sort(E[] arr) {
-		for (int i = n / 2 - 1; i >= 0; i--) {
-			heapify(arr, n, i);
-		}
-		for (int i = n - 1; i >= 0; i--) {
-			E temp = arr[0];
-			arr[0] = arr[i];
-			arr[i] = temp;
-			heapify(arr, i, 0);
-		}
-	}
-
-	private void heapify(E[] arr, int n, int i) {
-		int smallest = i;
-		int left = 2 * i + 1;
-		int right = 2 * i + 2;
-
-		if (left < n && arr[left].compareTo(arr[smallest]) > 0) {
-			smallest = left;
-		}
-		if (right < n && arr[right].compareTo(arr[smallest]) > 0) {
-			smallest = right;
-		}
-		if (smallest != i) {
-			E temp = arr[i];
-			arr[i] = arr[smallest];
-			arr[smallest] = temp;
-			heapify(arr, n, smallest);
-		}
 	}
 
 }
