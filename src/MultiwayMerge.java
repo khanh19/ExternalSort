@@ -6,25 +6,25 @@ import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-//On my honor:
+// On my honor:
 //
-//- I have not used source code obtained from another student,
-//or any other unauthorized source, either modified or
-//unmodified.
+// - I have not used source code obtained from another student,
+// or any other unauthorized source, either modified or
+// unmodified.
 //
-//- All source code and documentation used in my program is
-//either my original work, or was derived by me from the
-//source code published in the textbook for this course.
+// - All source code and documentation used in my program is
+// either my original work, or was derived by me from the
+// source code published in the textbook for this course.
 //
-//- I have not discussed coding details about this project with
-//anyone other than my partner (in the case of a joint
-//submission), instructor, ACM/UPE tutors or the TAs assigned
-//to this course. I understand that I may discuss the concepts
-//of this program with other students, and that another student
-//may help me debug my program so long as neither of us writes
-//anything during the discussion or modifies any computer file
-//during the discussion. I have violated neither the spirit nor
-//letter of this restriction.
+// - I have not discussed coding details about this project with
+// anyone other than my partner (in the case of a joint
+// submission), instructor, ACM/UPE tutors or the TAs assigned
+// to this course. I understand that I may discuss the concepts
+// of this program with other students, and that another student
+// may help me debug my program so long as neither of us writes
+// anything during the discussion or modifies any computer file
+// during the discussion. I have violated neither the spirit nor
+// letter of this restriction.
 /**
  * the way merge class
  * 
@@ -40,15 +40,21 @@ public class MultiwayMerge {
     /**
      * the construtor
      * 
-     * @param sourceFile source file
-     * @param run        the run store
-     * @param list       the list of run
+     * @param sourceFile
+     *            source file
+     * @param run
+     *            the run store
+     * @param list
+     *            the list of run
      */
-    public MultiwayMerge(String sourceFile, 
-            RunStore run, ArrayList<RunStore.RunInfo> list) {
+    public MultiwayMerge(
+        String sourceFile,
+        RunStore run,
+        ArrayList<RunStore.RunInfo> list) {
         this.runner = run;
         this.array = list;
     }
+
 
     /**
      * get runner method
@@ -59,14 +65,17 @@ public class MultiwayMerge {
         return this.runner;
     }
 
+
     /**
      * set runner method
      * 
-     * @param runner the runner
+     * @param runner
+     *            the runner
      */
     public void setRunner(RunStore runner) {
         this.runner = runner;
     }
+
 
     /**
      * the array list run
@@ -77,20 +86,25 @@ public class MultiwayMerge {
         return this.array;
     }
 
+
     /**
      * set array of run
      * 
-     * @param array the list of run
+     * @param array
+     *            the list of run
      */
     public void setArray(ArrayList<RunStore.RunInfo> array) {
         this.array = array;
     }
 
+
     /**
      * the file pointer position reaches the start of the next run
      * 
-     * @param sourceFile is name of file
+     * @param sourceFile
+     *            is name of file
      */
+    
     public void multiwayMerge(String sourceFile) throws IOException {
         File source = new File(sourceFile);
         File result = new File("mergeOut.bin");
@@ -108,15 +122,22 @@ public class MultiwayMerge {
             }
             while (runcount < array.size()) {
 
+                int bound = runcount + 8;
                 while (!(runcount >= array.size() 
-                        || runcount >= runcount + 8)) {
+                        || runcount >= bound)) {
                     byte[] currBlock = array.get(runcount).extractRun();
-                    int i = 0;
-                    while (i < currBlock.length) {
-                        minHeap.insert(new Record(Arrays.
-                                copyOfRange(currBlock, 
-                                        i, i + 16), runcount));
-                        i += 16;
+//                    int i = 0;
+//                    while (i < currBlock.length) {
+//                        minHeap.insert(new Record(Arrays.
+//                                copyOfRange(currBlock, 
+//                                        i, i + 16), runcount));
+//                        i += 16;
+//                    }
+                    for (int i = 0; i < currBlock.length; i += 16)
+                    {
+                        Record rec = new Record(Arrays.copyOfRange(
+                                currBlock, i, i + 16), runcount);
+                        minHeap.insert(rec);
                     }
                     int recnum = currBlock.length / 16;
                     recordAmmount.set(runcount, recnum);
@@ -130,15 +151,15 @@ public class MultiwayMerge {
                     int value = recordAmmount.get(idx);
                     recordAmmount.set(idx, value - 1);
                     // check exhausted input
-                    int checker = -1;
-                    for (int i = 0; i < recordAmmount.size(); i++) {
-                        if (recordAmmount.get(i) == 0) {
-                            checker = i;
-                        } 
-                        else {
-                            checker = -1;
-                        }
-                    }
+                    int checker = checkExhaustedRuns(recordAmmount);
+//                    for (int i = 0; i < recordAmmount.size(); i++) {
+//                        if (recordAmmount.get(i) == 0) {
+//                            checker = i;
+//                        } 
+//                        else {
+//                            checker = -1;
+//                        }
+//                    }
                     if (checker != -1) {
                         byte[] currBlock = array.get(checker).extractRun();
                         if (currBlock == null) {
@@ -164,11 +185,24 @@ public class MultiwayMerge {
             Files.move(result.toPath(), 
                     result.toPath().resolveSibling(sourceFile),
                     StandardCopyOption.REPLACE_EXISTING);
-            runcount = 0;
+            
             runner = new RunStore(sourceFile);
             ArrayList<RunStore.RunInfo> newarr = runner.getAllRun();
             array = newarr;
+            runcount = 0;
         }
+    }
+    
+    private int checkExhaustedRuns(ArrayList<Integer> recCount)
+    {
+        for (int i = 0; i < recCount.size(); i++)
+        {
+            if (recCount.get(i) == 0)
+            {
+                return i; 
+            }
+        }
+        return -1; 
     }
 
 }

@@ -37,7 +37,8 @@ import java.util.Arrays;
 public class Externalsort {
 
     /**
-     * @param args Command line parameters
+     * @param args
+     *            Command line parameters
      */
     public static void main(String[] args) throws IOException {
         ReplacementSelection rep = new ReplacementSelection(new File(args[0]));
@@ -46,10 +47,10 @@ public class Externalsort {
         ArrayList<RunStore.RunInfo> array = store.getAllRun();
         MultiwayMerge merger = new MultiwayMerge(args[0], store, array);
         merger.multiwayMerge(args[0]);
-        printFile(args[0], args[1]);
-        firstRecEachBlock(args[0]);
+        FileReader.firstRecEachBlock(args[0]);
 
     }
+
 
     /**
      * this helper function will print the record output into some file
@@ -58,49 +59,22 @@ public class Externalsort {
      * @param outputFile
      * @throws IOException
      */
-    private static void printFile(String source, 
-            String outputFile) throws IOException {
+    @SuppressWarnings("unused")
+    private static void printFile(String source, String outputFile)
+        throws IOException {
         FileWriter outFile = new FileWriter(outputFile);
         FileReader reader = new FileReader(new File(source));
         byte[] currBlock;
         while (reader.hasNext()) {
             currBlock = reader.next();
             for (int i = 0; i < currBlock.length; i += 16) {
-                Record rec = new Record(Arrays.
-                        copyOfRange(currBlock, i, i + 16));
+                Record rec = new Record(Arrays.copyOfRange(currBlock, i, i
+                    + 16));
                 outFile.write(rec.toString() + "at off: " + i + " \n");
             }
         }
         reader.closeFile();
         outFile.close();
-    }
-
-    /**
-     * this is a helper function to read the first record in each block
-     * 
-     * @param source the file source
-     * @throws IOException throw exception when it's done
-     */
-    private static void firstRecEachBlock(String source) throws IOException {
-        FileReader reader = new FileReader(new File(source));
-        byte[] currBlock;
-        String str = "";
-        int recCount = 0;
-        while (reader.hasNext()) {
-            currBlock = reader.next();
-            Record rec = new Record(Arrays.copyOfRange(currBlock, 0, 16));
-            recCount++;
-            if (recCount % 5 == 0) {
-                str += rec.toString() + "\n";
-            } 
-            else {
-                str += rec.toString() + " ";
-            }
-
-        }
-        reader.closeFile();
-        System.out.println(str);
-
     }
 
 }
