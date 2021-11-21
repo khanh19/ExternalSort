@@ -42,10 +42,8 @@ public class ReplacementSelection {
     /**
      * the constructor
      * 
-     * @param sourceFile
-     *            the source file
-     * @throws FileNotFoundException
-     *             throw exception when it's wrong
+     * @param sourceFile the source file
+     * @throws FileNotFoundException throw exception when it's wrong
      */
     public ReplacementSelection(File sourceFile) throws FileNotFoundException {
         outfile = new OutputBuffer();
@@ -53,12 +51,10 @@ public class ReplacementSelection {
         this.sourceFile = sourceFile;
     }
 
-
     /**
      * the sort function
      * 
-     * @throws IOException
-     *             throw exception when it's wrong
+     * @throws IOException throw exception when it's wrong
      */
     public void sort() throws IOException {
         FileReader parser = new FileReader(sourceFile);
@@ -69,8 +65,7 @@ public class ReplacementSelection {
 
             if (heap.heapsize() < 4096) {
                 for (int i = 0; i < block.length; i += 16) {
-                    Record rec = new Record(Arrays.copyOfRange(block, i, i
-                        + 16));
+                    Record rec = new Record(Arrays.copyOfRange(block, i, i + 16));
                     heap.insert(rec);
 
                 }
@@ -82,7 +77,7 @@ public class ReplacementSelection {
             InputBuffer b = new InputBuffer(block);
             while (!b.isEmpty()) {
                 if (heap.heapsize() == 0) {
-                    for (int i = 4095; i >=0; i--) {
+                    for (int i = 4095; i >= 0; i--) {
                         heap.insert(heap.getRecord(i));
                     }
                 }
@@ -97,15 +92,13 @@ public class ReplacementSelection {
                     }
                     heap.siftdown(0);
 
-                }
-                else {
+                } else {
                     Record record = heap.getRoot();
 
                     outfile.addToOutBuff(record.getCompleteRecord());
                     Record next = new Record(b.nextRecord());
                     heap.replacementRoot(next);
                     if (next.compareTo(record) < 0 && !outfile.isFull()) {
-                        
                         heap.swapFirst();
 
                     }
@@ -143,7 +136,7 @@ public class ReplacementSelection {
         outfile.closeFile();
         parser.closeFile();
         File nfile = new File("runFile.bin");
-        Files.move(nfile.toPath(), nfile.toPath().resolveSibling(sourceFile
-            .getName()), StandardCopyOption.REPLACE_EXISTING);
+        Files.move(nfile.toPath(), nfile.toPath().resolveSibling(sourceFile.getName()),
+                StandardCopyOption.REPLACE_EXISTING);
     }
 }
