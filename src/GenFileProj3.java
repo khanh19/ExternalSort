@@ -34,6 +34,7 @@ public class GenFileProj3 {
         return value.nextLong();
     }
 
+
     /**
      * static variable
      * 
@@ -43,28 +44,30 @@ public class GenFileProj3 {
         return value.nextDouble();
     }
 
+
     /**
      * main function to generate
      * 
-     * @param args the file
-     * @throws IOException throw exception when wrong
+     * @param args
+     *            the file
+     * @throws IOException
+     *             throw exception when wrong
      */
     public static void main(String[] args) throws IOException {
         long val;
         double val2;
-        assert (args.length == 2)
-                : "\nUsage: Genfile <filename> <size>" 
-        + "\nOptions \nSize is measured in blocks of 8192 bytes";
+        assert (args.length == 2) : "\nUsage: Genfile <filename> <size>"
+            + "\nOptions \nSize is measured in blocks of 8192 bytes";
 
         int filesize = Integer.parseInt(args[1]); // Size of file in blocks
-        DataOutputStream file = new DataOutputStream(new 
-                BufferedOutputStream(new FileOutputStream(args[0])));
+        DataOutputStream file = new DataOutputStream(new BufferedOutputStream(
+            new FileOutputStream(args[0])));
 
         for (int i = 0; i < filesize; i++) {
             for (int j = 0; j < NUMRECS; j++) {
-                val = (long) (randLong());
+                val = (long)(randLong());
                 file.writeLong(val);
-                val2 = (double) (randDouble());
+                val2 = (double)(randDouble());
                 file.writeDouble(val2);
             }
         }

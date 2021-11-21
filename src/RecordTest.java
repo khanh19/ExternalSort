@@ -12,7 +12,6 @@ public class RecordTest extends TestCase {
 
     private byte[] aBite;
 
-
     /**
      * The setup for the tests
      */
@@ -32,7 +31,8 @@ public class RecordTest extends TestCase {
         assertEquals((double)1, rec.getKey(), 0.00);
         assertTrue(rec.toString().equals("1.0"));
     }
-    
+
+
     /**
      * Tests the first constructor
      */
